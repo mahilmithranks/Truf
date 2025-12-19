@@ -110,32 +110,32 @@ export default function Home() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{ animationDelay: '200ms' }}>
               <Link href="/turfs">
-                <Button size="lg" className="group px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all">
+                <Button size="lg" className="group px-8 py-6 text-lg rounded-xl shadow-2xl hover:shadow-white/20 transition-all duration-500 bg-white text-black hover:bg-gray-100 font-semibold">
                   Browse Turfs
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="#features">
-                <Button variant="outline" size="lg" className="px-8 py-6 text-lg rounded-xl bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm">
+                <Button size="lg" variant="outline" className="px-8 py-6 text-lg rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 font-semibold">
                   Learn More
                 </Button>
               </Link>
             </div>
+          </div>
 
-            {/* Stats */}
-            <div className="mt-16 grid grid-cols-3 gap-8 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '300ms' }}>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2 drop-shadow-lg">1000+</div>
-                <div className="text-gray-200 text-sm drop-shadow-md">Happy Players</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2 drop-shadow-lg">5000+</div>
-                <div className="text-gray-200 text-sm drop-shadow-md">Bookings Made</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2 drop-shadow-lg">24/7</div>
-                <div className="text-gray-200 text-sm drop-shadow-md">Support</div>
-              </div>
+          {/* Stats */}
+          <div className="mt-16 grid grid-cols-3 gap-8 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '300ms' }}>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2 drop-shadow-lg">1000+</div>
+              <div className="text-gray-200 text-sm drop-shadow-md">Happy Players</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2 drop-shadow-lg">5000+</div>
+              <div className="text-gray-200 text-sm drop-shadow-md">Bookings Made</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2 drop-shadow-lg">24/7</div>
+              <div className="text-gray-200 text-sm drop-shadow-md">Support</div>
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-black">
+      <section className="py-20 bg-black" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -203,9 +203,9 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-zinc-950 via-black to-zinc-950 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-zinc-950 via-black to-zinc-950 relative overflow-hidden" >
         {/* Premium background effect */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.03)_0%,_transparent_100%)]" />
+        < div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.03)_0%,_transparent_100%)]" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="glass p-12 rounded-3xl animate-scale-in">
@@ -229,7 +229,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <Footer />
-    </div>
+      < Footer />
+    </div >
   );
 }
+
