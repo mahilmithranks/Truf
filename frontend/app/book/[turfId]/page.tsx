@@ -58,8 +58,8 @@ export default function BookingPage() {
     const fetchTurfDetails = async () => {
         try {
             setLoading(true);
-            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-            const response = await fetch(`${API_URL}/api/turfs/${params.turfId}`);
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/turfs/${params.turfId}`);
             const data = await response.json();
 
             if (data.success) {
@@ -79,10 +79,10 @@ export default function BookingPage() {
     const fetchSlots = async () => {
         try {
             setLoadingSlots(true);
-            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
             const dateStr = selectedDate.toISOString().split('T')[0];
             const response = await fetch(
-                `${API_URL}/api/turfs/${params.turfId}/slots?date=${dateStr}`
+                `${API_URL}/turfs/${params.turfId}/slots?date=${dateStr}`
             );
             const data = await response.json();
 
