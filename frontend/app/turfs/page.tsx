@@ -25,7 +25,8 @@ export default function TurfsPage() {
     const [loading, setLoading] = useState(true);
     const [selectedSport, setSelectedSport] = useState<string>('');
 
-    const API_URL = 'http://localhost:5000';
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
 
     useEffect(() => {
         fetchTurfs();
@@ -39,7 +40,7 @@ export default function TurfsPage() {
             params.append('city', 'Bangalore');
             if (selectedSport) params.append('sport', selectedSport);
 
-            const response = await fetch(`${API_URL}/api/turfs/list?${params}`);
+            const response = await fetch(`${API_URL}/turfs/list?${params}`);
             const data = await response.json();
 
             if (data.success) {
