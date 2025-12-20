@@ -13,50 +13,6 @@ const generateMockTurfs = () => {
         { name: 'Pune', state: 'Maharashtra' },
         { name: 'Jaipur', state: 'Rajasthan' },
         { name: 'Surat', state: 'Gujarat' },
-        { name: 'Lucknow', state: 'Uttar Pradesh' },
-        { name: 'Kanpur', state: 'Uttar Pradesh' },
-        { name: 'Nagpur', state: 'Maharashtra' },
-        { name: 'Indore', state: 'Madhya Pradesh' },
-        { name: 'Thane', state: 'Maharashtra' },
-        { name: 'Bhopal', state: 'Madhya Pradesh' },
-        { name: 'Visakhapatnam', state: 'Andhra Pradesh' },
-        { name: 'Patna', state: 'Bihar' },
-        { name: 'Vadodara', state: 'Gujarat' },
-        { name: 'Ghaziabad', state: 'Uttar Pradesh' },
-        { name: 'Ludhiana', state: 'Punjab' },
-        { name: 'Agra', state: 'Uttar Pradesh' },
-        { name: 'Nashik', state: 'Maharashtra' },
-        { name: 'Faridabad', state: 'Haryana' },
-        { name: 'Meerut', state: 'Uttar Pradesh' },
-        { name: 'Rajkot', state: 'Gujarat' },
-        { name: 'Varanasi', state: 'Uttar Pradesh' },
-        { name: 'Srinagar', state: 'Jammu and Kashmir' },
-        { name: 'Aurangabad', state: 'Maharashtra' },
-        { name: 'Dhanbad', state: 'Jharkhand' },
-        { name: 'Amritsar', state: 'Punjab' },
-        { name: 'Navi Mumbai', state: 'Maharashtra' },
-        { name: 'Allahabad', state: 'Uttar Pradesh' },
-        { name: 'Ranchi', state: 'Jharkhand' },
-        { name: 'Howrah', state: 'West Bengal' },
-        { name: 'Coimbatore', state: 'Tamil Nadu' },
-        { name: 'Jabalpur', state: 'Madhya Pradesh' },
-        { name: 'Gwalior', state: 'Madhya Pradesh' },
-        { name: 'Vijayawada', state: 'Andhra Pradesh' },
-        { name: 'Jodhpur', state: 'Rajasthan' },
-        { name: 'Madurai', state: 'Tamil Nadu' },
-        { name: 'Raipur', state: 'Chhattisgarh' },
-        { name: 'Kota', state: 'Rajasthan' },
-        { name: 'Chandigarh', state: 'Chandigarh' },
-        { name: 'Guwahati', state: 'Assam' },
-        { name: 'Mysore', state: 'Karnataka' },
-        { name: 'Bhubaneswar', state: 'Odisha' },
-        { name: 'Noida', state: 'Uttar Pradesh' },
-        { name: 'Jamshedpur', state: 'Jharkhand' },
-        { name: 'Kochi', state: 'Kerala' },
-        { name: 'Dehradun', state: 'Uttarakhand' },
-        { name: 'Jammu', state: 'Jammu and Kashmir' },
-        { name: 'Mangalore', state: 'Karnataka' },
-        { name: 'Udaipur', state: 'Rajasthan' },
     ];
 
     const turfNames = ['Arena', 'Stadium', 'Sports Complex', 'Turf Zone', 'Play Ground', 'Champions Field'];
@@ -136,8 +92,10 @@ async function seed() {
     try {
         console.log('🌱 Starting database seed...');
 
-        // Clear existing turfs
-        console.log('🗑️  Clearing existing turfs...');
+        // Clear existing data in correct order (to avoid foreign key constraints)
+        console.log('🗑️  Clearing existing data...');
+        await prisma.booking.deleteMany({});
+        await prisma.slot.deleteMany({});
         await prisma.turf.deleteMany({});
 
         // Generate and insert mock turfs
