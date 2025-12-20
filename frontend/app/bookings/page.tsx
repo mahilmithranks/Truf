@@ -167,7 +167,7 @@ export default function BookingsPage() {
                                 : `No ${filter} bookings found.`}
                         </p>
                         <Button
-                            onClick={() => router.push('/book')}
+                            onClick={() => router.push('/turfs')}
                             className="bg-white text-black hover:bg-gray-100"
                         >
                             Book a Slot
