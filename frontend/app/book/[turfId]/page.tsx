@@ -55,6 +55,18 @@ export default function BookingPage() {
         }
     }, [selectedDate, turf]);
 
+    // Auto-refresh slots every 10 seconds to show real-time availability
+    useEffect(() => {
+        if (!selectedDate || !turf) return;
+
+        const interval = setInterval(() => {
+            fetchSlots();
+        }, 10000); // Refresh every 10 seconds
+
+        return () => clearInterval(interval);
+    }, [selectedDate, turf]);
+
+
     const fetchTurfDetails = async () => {
         try {
             setLoading(true);
@@ -81,8 +93,18 @@ export default function BookingPage() {
             setLoadingSlots(true);
             const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
             const dateStr = selectedDate.toISOString().split('T')[0];
+
+            // Add timestamp to prevent caching
+            const timestamp = new Date().getTime();
             const response = await fetch(
-                `${API_URL}/turfs/${params.turfId}/slots?date=${dateStr}`
+                `${API_URL}/turfs/${params.turfId}/slots?date=${dateStr}&_t=${timestamp}`,
+                {
+                    cache: 'no-store', // Disable caching
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache'
+                    }
+                }
             );
             const data = await response.json();
 
