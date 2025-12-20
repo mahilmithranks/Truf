@@ -1,22 +1,21 @@
+```javascript
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { CreditCard, Smartphone, Building2, Wallet, ArrowLeft, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import api from '@/lib/api';
+import { CreditCard, Smartphone, Building2, Banknote, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
+import api from '@/lib/api';
 
-export default function PaymentPage() {
+function PaymentPageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const returnTo = searchParams.get('returnTo');
+
+    const [bookingData, setBookingData] = useState<any>(null);
     const [processing, setProcessing] = useState(false);
     const [paymentComplete, setPaymentComplete] = useState(false);
-
-    // Get booking data from session storage
-    const [bookingData, setBookingData] = useState<any>(null);
-    const returnUrl = searchParams.get('returnTo') || '/dashboard';
 
     useEffect(() => {
         const data = sessionStorage.getItem('pendingBooking');
