@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Footer } from '@/components/Footer';
 import { MapPin, Star, IndianRupee, Users } from 'lucide-react';
 
 interface Turf {
@@ -34,6 +35,8 @@ export default function TurfsPage() {
         try {
             setLoading(true);
             const params = new URLSearchParams();
+            // Always filter by Bangalore
+            params.append('city', 'Bangalore');
             if (selectedSport) params.append('sport', selectedSport);
 
             const response = await fetch(`${API_URL}/api/turfs/list?${params}`);
@@ -64,25 +67,56 @@ export default function TurfsPage() {
                     </p>
                 </div>
 
+                {/* Coming Soon Banner */}
+                <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-zinc-900 to-zinc-800 border border-zinc-700 animate-slide-up" style={{ animationDelay: '100ms' }}>
+                    <div className="flex items-center justify-center gap-3">
+                        <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></div>
+                            <span className="text-lg font-semibold text-white">
+                                Currently available in Bangalore only
+                            </span>
+                        </div>
+                        <span className="text-gray-400">•</span>
+                        <span className="text-gray-300">
+                            Coming soon to Mumbai, Delhi, Chennai & more cities! 🚀
+                        </span>
+                    </div>
+                </div>
+
                 {/* Filters */}
                 <div className="mb-8 flex flex-wrap gap-4 animate-slide-up">
                     {/* Sport Filter */}
-                    <select
-                        value={selectedSport}
-                        onChange={(e) => setSelectedSport(e.target.value)}
-                        className="px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:border-white focus:ring-white/20 transition-colors font-medium"
-                    >
-                        <option value="">All Sports</option>
-                        {sports.map((sport) => (
-                            <option key={sport} value={sport}>{sport}</option>
-                        ))}
-                    </select>
+                    <div className="relative group">
+                        <select
+                            value={selectedSport}
+                            onChange={(e) => setSelectedSport(e.target.value)}
+                            className="appearance-none px-6 py-3 pr-12 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:border-white focus:ring-2 focus:ring-white/20 transition-all duration-300 font-medium cursor-pointer hover:bg-zinc-800 hover:border-zinc-700 min-w-[200px]"
+                        >
+                            <option value="" className="bg-zinc-900">🏆 All Sports</option>
+                            <option value="Cricket" className="bg-zinc-900">🏏 Cricket</option>
+                            <option value="Football" className="bg-zinc-900">⚽ Football</option>
+                            <option value="Basketball" className="bg-zinc-900">🏀 Basketball</option>
+                            <option value="Badminton" className="bg-zinc-900">🏸 Badminton</option>
+                            <option value="Tennis" className="bg-zinc-900">🎾 Tennis</option>
+                            <option value="Volleyball" className="bg-zinc-900">🏐 Volleyball</option>
+                        </select>
+                        {/* Custom dropdown arrow */}
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
 
                     {/* Results Count */}
                     {!loading && (
-                        <div className="flex items-center px-4 py-3 text-gray-400">
+                        <div className="flex items-center px-6 py-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50 text-gray-400">
+                            <svg className="w-5 h-5 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
                             <span className="font-medium text-white">{turfs.length}</span>
-                            <span className="ml-2">turfs available</span>
+                            <span className="ml-2">turfs in Bangalore</span>
                         </div>
                     )}
 
@@ -90,8 +124,11 @@ export default function TurfsPage() {
                     {selectedSport && (
                         <button
                             onClick={() => setSelectedSport('')}
-                            className="px-6 py-3 rounded-xl bg-zinc-800 text-white hover:bg-zinc-700 transition-colors font-medium"
+                            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-300 font-medium group"
                         >
+                            <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                             Clear Filter
                         </button>
                     )}
@@ -116,7 +153,7 @@ export default function TurfsPage() {
                         {turfs.map((turf, index) => (
                             <Link
                                 key={turf.id}
-                                href={`/turfs/${turf.id}`}
+                                href={`/book/${turf.id}`}
                                 className="group animate-scale-in"
                                 style={{ animationDelay: `${index * 100}ms` }}
                             >
@@ -184,7 +221,7 @@ export default function TurfsPage() {
                                                 <span className="text-gray-400 text-sm font-normal">/hour</span>
                                             </div>
                                             <span className="text-white font-medium group-hover:translate-x-1 transition-transform">
-                                                View Details →
+                                                Book Now →
                                             </span>
                                         </div>
                                     </div>
@@ -200,7 +237,9 @@ export default function TurfsPage() {
                         <Users className="w-16 h-16 text-zinc-700 mx-auto mb-4" />
                         <h3 className="text-2xl font-bold text-white mb-2">No turfs found</h3>
                         <p className="text-gray-400 mb-6">
-                            {selectedSport ? `No turfs available for ${selectedSport}` : 'Try selecting a different sport or check back later'}
+                            {selectedSport
+                                ? `No turfs available in Bangalore for ${selectedSport}`
+                                : 'No turfs available at the moment'}
                         </p>
                         {selectedSport && (
                             <button
@@ -213,6 +252,7 @@ export default function TurfsPage() {
                     </div>
                 )}
             </div>
+            <Footer />
         </div>
     );
 }

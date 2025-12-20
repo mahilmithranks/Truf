@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             if (user.role === 'ADMIN') {
                 router.push('/admin/dashboard');
             } else {
-                router.push('/turfs');
+                router.push('/dashboard');
             }
         } catch (error: any) {
             throw new Error(error.response?.data?.message || 'Login failed');
@@ -76,8 +76,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             localStorage.setItem('user', JSON.stringify(user));
             setUser(user);
 
-            // Redirect to turfs page after registration
-            router.push('/turfs');
+            // Redirect to dashboard after registration
+            router.push('/dashboard');
         } catch (error: any) {
             throw new Error(error.response?.data?.message || 'Registration failed');
         }

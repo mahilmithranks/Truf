@@ -12,6 +12,7 @@ export const getUserBookings = async (req, res) => {
             where: { userId },
             include: {
                 slot: true,
+                turf: true,
             },
             orderBy: { createdAt: 'desc' },
         });
@@ -127,12 +128,13 @@ export const cancelBooking = async (req, res) => {
         const userId = req.user.id;
         const isAdmin = req.user.role === 'ADMIN';
 
-        // Get booking
+        // Get booking with turf data
         const booking = await prisma.booking.findUnique({
             where: { id },
             include: {
                 slot: true,
                 user: true,
+                turf: true,
             },
         });
 
@@ -158,13 +160,32 @@ export const cancelBooking = async (req, res) => {
             });
         }
 
+        // Calculate time difference between now and booking creation
+        const now = new Date();
+        const bookingTime = new Date(booking.createdAt);
+        const hoursSinceBooking = (now - bookingTime) / (1000 * 60 * 60); // Convert to hours
+
+        // Determine refund status based on 2-hour policy
+        let refundStatus = 'FAILED';
+        let refundMessage = '';
+
+        if (hoursSinceBooking <= 2) {
+            // Within 2 hours - 100% refund
+            refundStatus = booking.paymentStatus === 'COMPLETED' ? 'REFUNDED' : 'FAILED';
+            refundMessage = 'Full refund will be processed within 5-7 business days.';
+        } else {
+            // After 2 hours - No refund
+            refundStatus = 'FAILED';
+            refundMessage = 'No refund available as cancellation is after 2 hours of booking.';
+        }
+
         // Cancel booking and free up slot
         await prisma.$transaction(async (tx) => {
             await tx.booking.update({
                 where: { id },
                 data: {
                     status: 'CANCELLED',
-                    paymentStatus: booking.paymentStatus === 'COMPLETED' ? 'REFUNDED' : 'FAILED',
+                    paymentStatus: refundStatus,
                 },
             });
 
@@ -174,29 +195,35 @@ export const cancelBooking = async (req, res) => {
             });
         });
 
-        // Get turf settings
-        const turfSettings = await prisma.turfSettings.findFirst();
-
         // Send cancellation email
-        await sendBookingCancellation(booking.user.email, {
-            bookingId: booking.id,
-            turfName: turfSettings.name,
-            date: booking.slot.date,
-            startTime: booking.slot.startTime,
-            endTime: booking.slot.endTime,
-            userName: booking.user.name,
-            cancelledBy: isAdmin ? 'Admin' : 'You',
-        });
+        try {
+            await sendBookingCancellation(booking.user.email, {
+                bookingId: booking.id,
+                turfName: booking.turf?.name || 'Turf',
+                date: booking.slot.date,
+                startTime: booking.slot.startTime,
+                endTime: booking.slot.endTime,
+                userName: booking.user.name,
+                cancelledBy: isAdmin ? 'Admin' : 'You',
+                refundStatus: refundStatus,
+                refundMessage: refundMessage,
+            });
+        } catch (emailError) {
+            console.error('Email sending failed:', emailError);
+            // Don't fail the cancellation if email fails
+        }
 
         res.json({
             success: true,
             message: 'Booking cancelled successfully',
+            refundStatus: refundStatus,
+            refundMessage: refundMessage,
         });
     } catch (error) {
         console.error('Cancel booking error:', error);
         res.status(500).json({
             success: false,
-            message: 'Server error cancelling booking',
+            message: error.message || 'Server error cancelling booking',
         });
     }
 };

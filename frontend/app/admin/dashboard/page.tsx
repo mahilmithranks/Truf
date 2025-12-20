@@ -36,13 +36,16 @@ interface RecentBooking {
 }
 
 export default function AdminDashboardPage() {
-    const { isAdmin, isAuthenticated } = useAuth();
+    const { isAdmin, isAuthenticated, loading: authLoading } = useAuth();
     const router = useRouter();
     const [stats, setStats] = useState<Stats | null>(null);
     const [recentBookings, setRecentBookings] = useState<RecentBooking[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Wait for auth to load before redirecting
+        if (authLoading) return;
+
         if (!isAuthenticated) {
             router.push('/login');
             return;
@@ -54,7 +57,7 @@ export default function AdminDashboardPage() {
         }
 
         fetchDashboardData();
-    }, [isAuthenticated, isAdmin, router]);
+    }, [isAuthenticated, isAdmin, authLoading, router]);
 
     const fetchDashboardData = async () => {
         try {
@@ -72,7 +75,7 @@ export default function AdminDashboardPage() {
         }
     };
 
-    if (!isAuthenticated || !isAdmin) {
+    if (authLoading || !isAuthenticated || !isAdmin) {
         return <PageLoader />;
     }
 
@@ -223,17 +226,17 @@ export default function AdminDashboardPage() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${booking.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
-                                                        booking.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                                                            'bg-red-100 text-red-800'
+                                                    booking.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                                                        'bg-red-100 text-red-800'
                                                     }`}>
                                                     {booking.status}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${booking.paymentStatus === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                                                        booking.paymentStatus === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                                                            booking.paymentStatus === 'REFUNDED' ? 'bg-purple-100 text-purple-800' :
-                                                                'bg-red-100 text-red-800'
+                                                    booking.paymentStatus === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                                                        booking.paymentStatus === 'REFUNDED' ? 'bg-purple-100 text-purple-800' :
+                                                            'bg-red-100 text-red-800'
                                                     }`}>
                                                     {booking.paymentStatus}
                                                 </span>

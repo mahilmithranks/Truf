@@ -1,0 +1,21 @@
+
+========================================
+USERS IN DATABASE
+========================================
+Total users: 3
+
+1. Email: mahil@gmail.com
+   Name: Mahil
+   Role: CLIENT
+
+2. Email: test@example.com
+   Name: Test User
+   Role: CLIENT
+
+3. Email: mahilmithranks2007@gmail.com
+   Name: Mahil
+   Role: CLIENT
+
+Use any of these emails to login!
+Note: You need to know the password you used when registering.
+========================================

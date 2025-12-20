@@ -16,7 +16,7 @@ export default function Navbar() {
     const isActive = (path: string) => pathname === path;
 
     const userNavLinks = [
-        { href: '/book', label: 'Book Slot', icon: Calendar },
+        { href: '/turfs', label: 'Browse Turfs', icon: Calendar },
         { href: '/bookings', label: 'My Bookings', icon: FileText },
     ];
 
@@ -37,13 +37,27 @@ export default function Navbar() {
                     <div className="flex justify-between h-20">
                         {/* Logo */}
                         <div className="flex items-center">
-                            <Link href="/" className="flex items-center group transition-transform duration-300 hover:scale-105">
+                            <Link
+                                href={isAuthenticated ? '/dashboard' : '/'}
+                                className="flex items-center group transition-transform duration-300 hover:scale-105"
+                            >
                                 <img src="/turfbook-logo-white.png" alt="TurfBook" className="h-25 w-auto" />
                             </Link>
                         </div>
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center space-x-2">
+                            {/* About Link - Always visible */}
+                            <Link
+                                href="/about"
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive('/about')
+                                    ? 'bg-white text-black shadow-md'
+                                    : 'text-gray-300 hover:bg-zinc-800 hover:text-white'
+                                    }`}
+                            >
+                                About
+                            </Link>
+
                             {isAuthenticated ? (
                                 <>
                                     {navLinks.map((link) => {
@@ -113,6 +127,18 @@ export default function Navbar() {
             {mobileMenuOpen && (
                 <div className="md:hidden border-t border-zinc-800 bg-black/95 backdrop-blur-md">
                     <div className="px-4 py-4 space-y-2">
+                        {/* About Link - Always visible */}
+                        <Link
+                            href="/about"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${isActive('/about')
+                                ? 'bg-white text-black'
+                                : 'text-gray-300 hover:bg-zinc-800 hover:text-white'
+                                }`}
+                        >
+                            About
+                        </Link>
+
                         {isAuthenticated ? (
                             <>
                                 {/* User Info */}

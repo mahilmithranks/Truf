@@ -1,8 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export default function TermsPage() {
+    const searchParams = useSearchParams();
+    const returnTo = searchParams.get('returnTo') || '/';
+
     return (
         <div className="min-h-screen bg-black text-white py-16">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,13 +122,13 @@ export default function TermsPage() {
                     </section>
                 </div>
 
-                {/* Back to Home */}
+                {/* Back Button */}
                 <div className="mt-12 pt-8 border-t border-zinc-800">
                     <Link
-                        href="/"
-                        className="inline-flex items-center text-white hover:text-gray-300 transition-colors"
+                        href={returnTo}
+                        className="inline-flex items-center text-white hover:text-gray-300 transition-colors font-medium"
                     >
-                        ← Back to Home
+                        ← Back to {returnTo === '/' ? 'Home' : 'Previous Page'}
                     </Link>
                 </div>
             </div>

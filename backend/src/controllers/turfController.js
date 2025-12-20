@@ -13,7 +13,7 @@ export const getAllTurfs = async (req, res) => {
         };
 
         if (city) {
-            where.city = { contains: city, mode: 'insensitive' };
+            where.city = { equals: city, mode: 'insensitive' };
         }
 
         if (sport) {

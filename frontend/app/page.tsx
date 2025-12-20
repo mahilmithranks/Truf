@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Calendar, CreditCard, CheckCircle, Clock, Shield, Zap, ArrowRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,15 @@ import { Footer } from '@/components/Footer';
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  const handleBrowseTurfs = () => {
+    if (isAuthenticated) {
+      router.push('/turfs');
+    } else {
+      router.push('/login');
+    }
+  };
 
   const features = [
     {
@@ -109,12 +119,14 @@ export default function Home() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{ animationDelay: '200ms' }}>
-              <Link href="/turfs">
-                <Button size="lg" className="group px-8 py-6 text-lg rounded-xl shadow-2xl hover:shadow-white/20 transition-all duration-500 bg-white text-black hover:bg-gray-100 font-semibold">
-                  Browse Turfs
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
+              <Button
+                onClick={handleBrowseTurfs}
+                size="lg"
+                className="group px-8 py-6 text-lg rounded-xl shadow-2xl hover:shadow-white/20 transition-all duration-500 bg-white text-black hover:bg-gray-100 font-semibold"
+              >
+                Browse Turfs
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
               <Link href="#features">
                 <Button size="lg" variant="outline" className="px-8 py-6 text-lg rounded-xl border-2 border-white/20 bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 font-semibold">
                   Learn More
@@ -215,21 +227,20 @@ export default function Home() {
             <p className="text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto">
               Join thousands of players who trust TurfBook for their turf booking needs
             </p>
-            <Link href="/turfs">
-              <Button
-                size="lg"
-                className="group px-10 py-7 text-lg rounded-2xl shadow-2xl hover:shadow-white/20 transition-all duration-500 animate-float bg-white text-black hover:bg-gray-100 font-semibold"
-              >
-                Browse Available Turfs
-                <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
-              </Button>
-            </Link>
+            <Button
+              onClick={handleBrowseTurfs}
+              size="lg"
+              className="group px-10 py-7 text-lg rounded-2xl shadow-2xl hover:shadow-white/20 transition-all duration-500 animate-float bg-white text-black hover:bg-gray-100 font-semibold"
+            >
+              Browse Available Turfs
+              <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      < Footer />
+      {/* Footer - Only show when authenticated */}
+      {isAuthenticated && <Footer />}
     </div >
   );
 }

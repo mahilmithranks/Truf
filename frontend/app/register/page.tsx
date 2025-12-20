@@ -84,7 +84,7 @@ export default function RegisterPage() {
                         <img
                             src="/turfbook-logo-white.png"
                             alt="TurfBook"
-                            className="h-12 mx-auto mb-8"
+                            className="h-25 mx-auto mb-8"
                         />
                     </Link>
                     <h2 className="text-4xl font-bold text-white mb-2">Create Account</h2>
