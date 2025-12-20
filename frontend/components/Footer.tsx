@@ -14,16 +14,6 @@ export const Footer = () => {
 
     return (
         <footer className="relative mt-16">
-            {/* Background Image */}
-            <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{
-                    backgroundImage: 'url(/footer-bg.jpg)',
-                }}
-            />
-            {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-black/80" />
-
             <div className="relative max-w-7xl mx-auto px-4 py-12">
                 {/* Main Footer Content */}
                 <div className="relative bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 md:p-12">
