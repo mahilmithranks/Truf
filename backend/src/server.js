@@ -66,12 +66,14 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`\n🚀 Server running on port ${PORT}`);
-    console.log(`📍 API: http://localhost:${PORT}/api`);
-    console.log(`🏥 Health: http://localhost:${PORT}/api/health\n`);
-});
+// Start server only in non-serverless environment
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`\n🚀 Server running on port ${PORT}`);
+        console.log(`📍 API: http://localhost:${PORT}/api`);
+        console.log(`🏥 Health: http://localhost:${PORT}/api/health\n`);
+    });
+}
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
@@ -79,3 +81,6 @@ process.on('SIGINT', async () => {
     await prisma.$disconnect();
     process.exit(0);
 });
+
+// Export for Vercel
+export default app;
