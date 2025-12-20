@@ -1,53 +1,84 @@
-# TurfBook - Multi-Turf Booking System
+# 🏟️ TurfBook - Sports Turf Booking Platform
 
-## 📋 Project Overview
+A modern, full-stack turf booking application built with Next.js, Express, and MongoDB. Book sports turfs in Bangalore with real-time slot availability, payment processing, and email notifications.
 
-TurfBook is a comprehensive multi-turf booking platform for sports facilities in Bangalore. Users can browse multiple turfs, view details, check availability, and book time slots for various sports.
+## 🌐 Live Demo
 
----
+- **Frontend**: https://truf-book.vercel.app
+- **Backend API**: https://truf-rose.vercel.app/api
 
-## ✅ Completed Features
+## ✨ Features
 
-### Backend
-- ✅ **Database Schema** - Prisma with MongoDB
-  - User model with authentication
-  - Turf model with location, amenities, sports, pricing
-  - Booking model with turf reference
-  - Slot model for availability
-- ✅ **API Endpoints**
-  - `/api/auth/register` - User registration
-  - `/api/auth/login` - User login
-  - `/api/turfs/list` - List all turfs with filtering
-  - `/api/turfs/:id` - Get turf details
-  - `/api/turfs/:id/slots?date=YYYY-MM-DD` - Get available slots
-  - `/api/bookings` - Create and view bookings
-- ✅ **Sample Data** - 5 turfs seeded in Bangalore
-- ✅ **Validation** - Email, password (min 6 chars), phone
+### 🔐 User Authentication
+- Secure registration and login with JWT
+- Password hashing with bcrypt
+- Protected routes and API endpoints
+- Persistent authentication across sessions
+
+### 🏟️ Turf Management
+- Browse 4+ turfs in Bangalore
+- Filter by sport (Cricket, Football, Basketball, etc.)
+- View detailed turf information
+- High-quality images and ratings
+- Amenities and operating hours
+
+### 📅 Smart Booking System
+- **Interactive Calendar**: Select dates up to 30 days ahead
+- **Real-Time Slot Availability**: Prevents double bookings
+- **Multi-Slot Selection**: Book multiple consecutive slots
+- **Auto-Refresh**: Slots update every 10 seconds
+- **Sport Selection**: Choose from available sports
+- **Player Count**: Specify number of players
+
+### 💳 Payment Integration
+- Mock payment gateway (ready for Razorpay/Stripe)
+- Multiple payment methods (UPI, Card, Net Banking, Wallet)
+- Secure payment confirmation
+- Booking reference generation
+
+### 📧 Email Notifications
+- Beautiful HTML email templates
+- Booking confirmation emails
+- Cancellation notifications
+- Refund status updates
+
+### 📱 My Bookings
+- View all bookings
+- Filter by status (Upcoming, Past, Cancelled)
+- Cancel bookings (2-hour refund policy)
+- Booking details and history
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- ✅ **Authentication Pages**
-  - `/register` - Registration with real-time validation
-  - `/login` - Login page
-  - Password strength indicator
-  - Email format validation
-- ✅ **Turf Pages**
-  - `/turfs` - Browse all turfs with sport filter
-  - `/turfs/[id]` - Turf details with image gallery
-  - `/book/[turfId]` - Complete booking flow
-- ✅ **Premium Design**
-  - Black & white theme
-  - Poppins font
-  - Glassmorphism effects
-  - Smooth animations
-  - Responsive layout
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **State Management**: React Context API
+- **HTTP Client**: Axios
+- **Notifications**: Sonner (Toast)
+- **Calendar**: Custom React Calendar
 
----
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB (Prisma ORM)
+- **Authentication**: JWT (jsonwebtoken)
+- **Email**: Nodemailer
+- **Validation**: Custom middleware
+- **Security**: bcrypt, CORS
+
+### Deployment
+- **Frontend**: Vercel
+- **Backend**: Vercel Serverless Functions
+- **Database**: MongoDB Atlas
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+
-- MongoDB Atlas account (or local MongoDB)
+- MongoDB Atlas account
 - npm or yarn
 
 ### Installation
@@ -64,16 +95,14 @@ cd backend
 npm install
 
 # Create .env file
-echo "DATABASE_URL=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRE=7d
-PORT=5000" > .env
+cp .env.example .env
+# Edit .env with your MongoDB URL and secrets
 
 # Generate Prisma client
 npx prisma generate
 
-# Seed database
-node scripts/seed-turfs.js
+# Seed database with sample turfs
+npm run seed
 
 # Start backend
 npm run dev
@@ -85,7 +114,7 @@ cd frontend
 npm install
 
 # Create .env.local file
-echo "NEXT_PUBLIC_API_URL=http://localhost:5000" > .env.local
+echo "NEXT_PUBLIC_API_URL=http://localhost:5000/api" > .env.local
 
 # Start frontend
 npm run dev
@@ -95,294 +124,193 @@ npm run dev
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000/api
 
----
-
 ## 📁 Project Structure
 
 ```
 Truf/
 ├── backend/
 │   ├── prisma/
-│   │   └── schema.prisma          # Database schema
-│   ├── scripts/
-│   │   └── seed-turfs.js          # Sample data seeder
+│   │   ├── schema.prisma          # Database schema
+│   │   └── seed.js                # Sample data seeder
 │   ├── src/
 │   │   ├── config/
 │   │   │   └── database.js        # Prisma client
 │   │   ├── controllers/
-│   │   │   ├── authController.js  # Auth logic
-│   │   │   └── turfController.js  # Turf logic
+│   │   │   ├── authController.js
+│   │   │   ├── turfController.js
+│   │   │   ├── bookingController.js
+│   │   │   └── paymentConfirmController.js
 │   │   ├── middleware/
 │   │   │   ├── auth.js            # JWT verification
-│   │   │   └── validation.js      # Input validation
+│   │   │   └── validation.js
 │   │   ├── routes/
-│   │   │   ├── auth.js            # Auth routes
-│   │   │   ├── turfs.js           # Turf routes
-│   │   │   └── bookings.js        # Booking routes
-│   │   └── server.js              # Express app
+│   │   │   ├── auth.js
+│   │   │   ├── turfs.js
+│   │   │   ├── bookings.js
+│   │   │   └── payment.js
+│   │   ├── utils/
+│   │   │   └── emailService.js    # Email templates
+│   │   └── server.js
 │   └── package.json
 │
 └── frontend/
     ├── app/
-    │   ├── register/
-    │   │   └── page.tsx           # Registration page
-    │   ├── login/
-    │   │   └── page.tsx           # Login page
-    │   ├── turfs/
-    │   │   ├── page.tsx           # Turf listing
-    │   │   └── [id]/
-    │   │       └── page.tsx       # Turf details
-    │   ├── book/
-    │   │   └── [turfId]/
-    │   │       └── page.tsx       # Booking page
-    │   └── page.tsx               # Homepage
+    │   ├── register/              # Registration page
+    │   ├── login/                 # Login page
+    │   ├── turfs/                 # Browse turfs
+    │   ├── book/[turfId]/         # Booking page
+    │   ├── payment/               # Payment page
+    │   ├── bookings/              # My bookings
+    │   └── layout.tsx
     ├── components/
-    │   ├── Navbar.tsx             # Navigation
-    │   └── Footer.tsx             # Footer
+    │   ├── ui/                    # shadcn components
+    │   ├── Navbar.tsx
+    │   └── Footer.tsx
     ├── contexts/
-    │   └── AuthContext.tsx        # Auth state
+    │   └── AuthContext.tsx
     ├── lib/
-    │   └── api.ts                 # API client
+    │   └── api.ts
     └── package.json
 ```
 
----
+## 🔄 User Flow
 
-## 🎯 User Flow
+1. **Register/Login** → Create account or sign in
+2. **Browse Turfs** → View available turfs in Bangalore
+3. **Select Turf** → Click "Book Now" on desired turf
+4. **Choose Slots** → Select date, sport, and time slots
+5. **Payment** → Complete mock payment
+6. **Confirmation** → Receive email and booking ID
+7. **My Bookings** → View and manage bookings
 
-### 1. Registration & Login
-1. Visit `/register`
-2. Fill form with name, email, phone, password
-3. See real-time validation:
-   - Password strength indicator (min 6 chars)
-   - Email format check
-4. Submit to create account
-5. Auto-login and redirect to `/turfs`
-
-### 2. Browse Turfs
-1. View all 5 turfs in Bangalore
-2. Filter by sport (Cricket, Football, etc.)
-3. See turf cards with:
-   - Images
-   - Rating & reviews
-   - Sports available
-   - Price per hour
-   - Location
-
-### 3. View Turf Details
-1. Click on any turf card
-2. See full details:
-   - Image gallery with thumbnails
-   - Description
-   - Available sports
-   - Amenities (Parking, Washroom, etc.)
-   - Operating hours
-   - Contact information
-3. Click "Book Now"
-
-### 4. Book a Slot
-1. Select date (today to 30 days ahead)
-2. Choose sport
-3. Enter number of players
-4. View available time slots
-5. Select a slot
-6. Review booking summary
-7. Confirm booking
-
----
-
-## 🔧 API Documentation
+## 🔧 API Endpoints
 
 ### Authentication
-
-#### Register User
-```http
-POST /api/auth/register
-Content-Type: application/json
-
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "phone": "9876543210",
-  "password": "password123"
-}
-```
-
-#### Login User
-```http
-POST /api/auth/login
-Content-Type: application/json
-
-{
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
 
 ### Turfs
-
-#### List All Turfs
-```http
-GET /api/turfs/list
-GET /api/turfs/list?sport=Cricket
-GET /api/turfs/list?search=football
-```
-
-#### Get Turf Details
-```http
-GET /api/turfs/:id
-```
-
-#### Get Available Slots
-```http
-GET /api/turfs/:id/slots?date=2025-12-19
-```
+- `GET /api/turfs/list` - List all turfs (with filters)
+- `GET /api/turfs/:id` - Get turf details
+- `GET /api/turfs/:id/slots?date=YYYY-MM-DD` - Get available slots
 
 ### Bookings
-
-#### Create Booking
-```http
-POST /api/bookings
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "turfId": "...",
-  "date": "2025-12-20",
-  "startTime": "10:00",
-  "endTime": "11:00",
-  "sport": "Cricket",
-  "players": 11,
-  "totalAmount": 1500
-}
-```
-
-#### Get User Bookings
-```http
-GET /api/bookings
-Authorization: Bearer <token>
-```
-
----
+- `POST /api/bookings/confirm-payment` - Create booking
+- `GET /api/bookings/my-bookings` - Get user bookings
+- `DELETE /api/bookings/:id` - Cancel booking
 
 ## 🎨 Design System
 
-### Colors
-- **Background**: Pure black (#000000)
-- **Cards**: Zinc-900 with 50% opacity
-- **Borders**: Zinc-800
-- **Text**: White (headings), Gray-300/400 (body)
-- **Accents**: White buttons with black text
-
-### Typography
+- **Theme**: Dark mode with black background
 - **Font**: Poppins (Google Fonts)
-- **Headings**: Bold, tight tracking
-- **Body**: Regular, comfortable line height
+- **Colors**: Black, White, Zinc grays
+- **Effects**: Glassmorphism, smooth animations
+- **Responsive**: Mobile-first design
 
-### Effects
-- **Glassmorphism**: backdrop-blur-sm
-- **Animations**: fade-in, slide-up, scale-in
-- **Hover**: Glow effects, scale transforms
-- **Transitions**: 300-500ms duration
+## 🔒 Security Features
 
----
+- JWT-based authentication
+- Password hashing with bcrypt
+- CORS configuration
+- Input validation and sanitization
+- Protected API routes
+- Environment variable management
+
+## 📧 Email Templates
+
+- **Booking Confirmation**: Beautiful gradient design with booking details
+- **Cancellation Notice**: Refund information and booking details
+- **SMTP Configuration**: Nodemailer with Gmail/custom SMTP
 
 ## 🐛 Troubleshooting
 
-### Frontend shows "undefined/api/turfs/list"
-**Solution**: Restart frontend after creating `.env.local`
-```bash
-# Stop frontend (Ctrl+C)
-npm run dev
-```
+### Slots not updating for other users
+**Solution**: Implemented auto-refresh (every 10 seconds) and cache-busting
 
-### Backend "Route not found" error
-**Solution**: Verify route is `/api/turfs` (plural) in `server.js`
+### Frontend shows API errors
+**Solution**: Check `NEXT_PUBLIC_API_URL` in `.env.local`
 
 ### Database connection failed
-**Solution**: 
-1. Check MongoDB Atlas IP whitelist
-2. Verify DATABASE_URL in `.env`
-3. Ensure cluster is running
+**Solution**: Verify MongoDB Atlas IP whitelist and DATABASE_URL
 
-### Registration fails with 400 error
-**Solution**: Check validation:
-- Email must be valid format
-- Password minimum 6 characters
-- Phone 10-15 digits
-
----
+### Email not sending
+**Solution**: Check EMAIL_* environment variables in backend
 
 ## 📝 Environment Variables
 
 ### Backend (.env)
 ```env
-DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/turfbook
-JWT_SECRET=your_super_secret_key_here
+DATABASE_URL=mongodb+srv://...
+JWT_SECRET=your_secret_key
 JWT_EXPIRE=7d
-PORT=5000
-NODE_ENV=development
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-app-password
+EMAIL_FROM=TurfBook <noreply@turfbook.com>
+NODE_ENV=production
 ```
 
 ### Frontend (.env.local)
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=https://truf-rose.vercel.app/api
 ```
 
----
+## 🚀 Deployment
 
-## 🚧 Known Limitations
+### Vercel Deployment
 
-1. **Single City**: Currently hardcoded for Bangalore only
-2. **No Payment**: Booking confirmation without payment integration
-3. **No Reviews**: Review system not implemented
-4. **Static Images**: Using placeholder image paths
-5. **No Admin Panel**: Turf management requires database access
+1. **Frontend**:
+   - Connect GitHub repository to Vercel
+   - Set `NEXT_PUBLIC_API_URL` environment variable
+   - Deploy from `main` branch
 
----
+2. **Backend**:
+   - Create separate Vercel project
+   - Set all backend environment variables
+   - Deploy from `main` branch
 
-## 🔜 Next Steps
+3. **Database**:
+   - Use MongoDB Atlas
+   - Whitelist Vercel IPs (0.0.0.0/0 for serverless)
 
-### Immediate
-- [ ] Fix remaining turf detail pages to use hardcoded API URL
-- [ ] Fix booking page API URL
-- [ ] Update My Bookings page
-- [ ] Test complete booking flow
+## ✅ Features Completed
 
-### Short Term
-- [ ] Payment gateway integration (Razorpay)
-- [ ] Email/SMS notifications
-- [ ] Booking cancellation
-- [ ] User profile page
+- ✅ User authentication (register/login)
+- ✅ Turf browsing with filters
+- ✅ Real-time slot availability
+- ✅ Multi-slot booking
+- ✅ Payment flow (mock)
+- ✅ Email notifications
+- ✅ Booking management
+- ✅ Cancellation with refund policy
+- ✅ Responsive design
+- ✅ Auto-refresh slots
+- ✅ Double-booking prevention
 
-### Long Term
-- [ ] Admin panel (separate website)
-- [ ] Multi-city support
-- [ ] Reviews and ratings
+## 🔜 Future Enhancements
+
+- [ ] Real payment gateway (Razorpay/Stripe)
+- [ ] Multi-city support (Mumbai, Delhi, Chennai)
+- [ ] User reviews and ratings
+- [ ] Admin dashboard
+- [ ] Push notifications
 - [ ] Recurring bookings
 - [ ] Mobile app (React Native)
 
----
-
 ## 📊 Sample Data
 
-The seed script creates 5 turfs:
+4 turfs seeded in Bangalore:
+- Sports Complex Bangalore
+- Champions Field Bangalore
+- Turf Zone Bangalore
+- Play Ground Bangalore
 
-1. **Green Valley Sports Arena** - Cricket, Football - ₹1500/hr - 4.5★
-2. **Champions Cricket Ground** - Cricket - ₹1800/hr - 4.7★
-3. **Urban Football Hub** - Football, Basketball - ₹1200/hr - 4.3★
-4. **All Sports Arena** - Cricket, Football, Badminton, Tennis - ₹1600/hr - 4.6★
-5. **Elite Sports Complex** - Cricket, Football, Tennis - ₹2000/hr - 4.8★
-
-All located in different areas of Bangalore with realistic amenities and operating hours (6 AM - 10 PM).
-
----
+Each with multiple sports, amenities, and pricing ₹500-₹1400/hour.
 
 ## 🤝 Contributing
 
 This is a private project. For questions or issues, contact the development team.
-
----
 
 ## 📄 License
 
@@ -390,16 +318,6 @@ Proprietary - All rights reserved
 
 ---
 
-## 🎉 Success Criteria
+**Status**: ✅ Production-ready and deployed!
 
-✅ User can register and login
-✅ User can browse 5 turfs
-✅ User can filter by sport
-✅ User can view turf details
-✅ User can see available slots
-✅ User can book a slot
-✅ Premium black theme throughout
-✅ Responsive design
-✅ Real-time validation
-
-**Status**: Core functionality complete! Ready for booking API integration and testing. 🚀
+**Live App**: https://truf-book.vercel.app 🚀
