@@ -24,7 +24,7 @@ const allowedOrigins = [
     'https://truf-git-main-zenvoatechnologies.vercel.app'
 ].filter(Boolean);
 
-app.use(cors({
+const corsOptions = {
     origin: function (origin, callback) {
         // Allow requests with no origin (mobile apps, Postman, etc.)
         if (!origin) return callback(null, true);
@@ -36,7 +36,14 @@ app.use(cors({
         }
     },
     credentials: true,
-}));
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight OPTIONS requests explicitly for all routes
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -74,6 +81,14 @@ app.use((req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
     console.error('Error:', err);
+
+    // Ensure CORS headers are present even on error responses
+    const origin = req.headers.origin;
+    if (origin && origin.endsWith('.vercel.app')) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
+
     res.status(err.status || 500).json({
         success: false,
         message: err.message || 'Internal server error',
