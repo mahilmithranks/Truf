@@ -4,6 +4,11 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { Toaster } from '@/components/ui/toaster';
+import MaintenancePage from '@/components/MaintenancePage';
+
+// ─── Toggle this to take the site offline / online ───────────────────────────
+const MAINTENANCE_MODE = true;
+// ─────────────────────────────────────────────────────────────────────────────
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -12,8 +17,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'TurfBook - Book Your Turf Slot',
-  description: 'Easy online turf booking with instant confirmation',
+  title: 'TurfBook - Under Maintenance',
+  description: 'We are currently under maintenance. We will be back soon.',
 };
 
 export default function RootLayout({
@@ -21,6 +26,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (MAINTENANCE_MODE) {
+    return (
+      <html lang="en">
+        <body className={`${poppins.variable} font-sans bg-black text-white`}>
+          <MaintenancePage />
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en">
       <body className={`${poppins.variable} font-sans bg-black text-white`}>
@@ -33,3 +48,4 @@ export default function RootLayout({
     </html>
   );
 }
+
