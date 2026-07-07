@@ -219,3 +219,26 @@ html {
   background-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
+
+/* Maintenance page animations */
+@keyframes maintenance-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.1); }
+}
+
+@keyframes maintenance-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animate-maintenance-pulse {
+  animation: maintenance-pulse 4s ease-in-out infinite;
+}
+
+.animate-maintenance-pulse-slow {
+  animation: maintenance-pulse 5s ease-in-out infinite reverse;
+}
+
+.animate-maintenance-spin {
+  animation: maintenance-spin 8s linear infinite;
+}

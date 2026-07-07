@@ -64,6 +64,8 @@ export default {
         "glow": "glow 2s ease-in-out infinite",
         "shimmer": "shimmer 2s linear infinite",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "pulse-amber": "pulseAmber 2s infinite",
+        "turf-shimmer": "turfShimmer 1.8s infinite",
         first: "moveVertical 30s ease infinite",
         second: "moveInCircle 20s reverse infinite",
         third: "moveInCircle 40s linear infinite",
@@ -127,6 +129,15 @@ export default {
           "100%": {
             transform: "translateY(-50%)",
           },
+        },
+        pulseAmber: {
+          "0%": { boxShadow: "0 0 0 0 rgba(232,161,58,0.55)" },
+          "70%": { boxShadow: "0 0 0 10px rgba(232,161,58,0)" },
+          "100%": { boxShadow: "0 0 0 0 rgba(232,161,58,0)" },
+        },
+        turfShimmer: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(200%)" },
         },
       },
     },
