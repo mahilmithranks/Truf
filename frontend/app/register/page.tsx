@@ -38,6 +38,13 @@ export default function RegisterPage() {
             return;
         }
 
+        if (formData.phone && (formData.phone.length < 10 || formData.phone.length > 15)) {
+            toast.error('Invalid phone number', {
+                description: 'Phone number must be between 10 and 15 digits.',
+            });
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -74,6 +81,7 @@ export default function RegisterPage() {
     // Validation helpers
     const isPasswordValid = formData.password.length >= 6;
     const isEmailValid = formData.email.includes('@') && formData.email.includes('.');
+    const isPhoneValid = !formData.phone || (formData.phone.length >= 10 && formData.phone.length <= 15);
 
     return (
         <div className="min-h-screen bg-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -139,6 +147,9 @@ export default function RegisterPage() {
                                 className="mt-1 bg-zinc-900 border-zinc-800 text-white focus:border-white focus:ring-white/20"
                                 placeholder="Enter your phone number"
                             />
+                            {formData.phone && !isPhoneValid && (
+                                <p className="text-red-400 text-sm mt-1">Phone must be 10–15 digits</p>
+                            )}
                         </div>
 
                         {/* Password */}

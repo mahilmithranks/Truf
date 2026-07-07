@@ -5,6 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 // Create axios instance
 const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -33,6 +34,13 @@ api.interceptors.response.use(
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';
+    }
+    // Surface the most specific error message available
+    const data = error.response?.data;
+    if (data?.errors?.length) {
+      error.message = data.errors[0].message;
+    } else if (data?.message) {
+      error.message = data.message;
     }
     return Promise.reject(error);
   }
