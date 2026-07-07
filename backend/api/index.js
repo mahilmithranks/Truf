@@ -16,11 +16,13 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
+// IMPORTANT: Set FRONTEND_URL in Vercel environment variables to your actual deployed frontend URL.
+// Without it, only the hardcoded origins below are permitted.
 const allowedOrigins = [
     'http://localhost:3000',
     process.env.FRONTEND_URL,
     'https://truf.vercel.app',
+    'https://truf-main.vercel.app',
     'https://truf-git-main-zenvoatechnologies.vercel.app'
 ].filter(Boolean);
 
